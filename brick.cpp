@@ -1,9 +1,16 @@
 #include <iostream>
 #include "brick.h"
 
-Brick::Brick(int x, int y) {
-  if (!image.load(":/brickie.png"))
-      std::cout << ("Image was not loaded!!!!") << std::endl;
+Brick::Brick(int x, int y, bool _bonus) {
+  bonus = _bonus;
+  if (bonus) {
+      if (!image.load(":/brickie_bonus.png"))
+          std::cout << ("Image was not loaded!!!!") << std::endl;
+  }
+  else {
+      if (!image.load(":/brickie.png"))
+          std::cout << ("Image was not loaded!!!!") << std::endl;
+  }
   destroyed = false;
   rect = image.rect();
   rect.translate(x, y);
@@ -37,10 +44,6 @@ bool Brick::isDestroyed() {
 void Brick::setDestroyed(bool destr) {
 
   destroyed = destr;
-}
-
-void Brick::setBonus(bool _bonus) {
-    bonus = _bonus;
 }
 
 bool Brick::isBonus() {

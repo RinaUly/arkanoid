@@ -7,7 +7,7 @@
 class Brick : public Sprite
 {
   public:
-    Brick(int, int);
+    Brick(int, int, bool=false);
     ~Brick();
 
   public:
@@ -16,8 +16,7 @@ class Brick : public Sprite
     QRect getRect() override;//получение хитбокса
     void setRect(QRect) ;//установление хитбокса
     QImage & getImage() override;//получение изображения
-    void setBonus(bool);
-    bool isBonus() {return bonus;}
+    bool isBonus();
 
   private:
     bool bonus = false;
