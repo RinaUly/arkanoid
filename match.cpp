@@ -25,10 +25,9 @@ Match::Match(QWidget *parent)
     { //присвоение позиции для кирпичиков
         for (int j = 0; j < 6; j++)
         {
-
             //создаю бонусный кирпич при определённом условии
             bool bonus = false;
-            if ((i + j) % 5 == 0)
+            if ((i + j) % 7 == 0)
                 bonus = true;
 
             bricks[k] = new Brick(j * 40 + 30, i * 10 + 50, bonus);
@@ -390,7 +389,7 @@ void Match::checkCollision()
                 bricks[i]->setDestroyed(true);
 
                 if (bricks[i]->isBonus())
-                    bonuses.push_back(new Bonus(bricks[i]->x, bricks[i]->y));
+                    bonuses.push_back(new Bonus(bricks[i]->x + bricks[i]->getRect().width() / 2, bricks[i]->y));
             }
         }
     }
