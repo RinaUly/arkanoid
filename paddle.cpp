@@ -1,26 +1,27 @@
 #include <iostream>
 #include "paddle.h"
 
+Paddle::Paddle()
+{
+    dx = 0;
+    image.load(":/paddle2.jpg");
 
-Paddle::Paddle() {
-
-  dx = 0;
-  image.load(":/paddle2.jpg");
-
-  rect = image.rect();
-  resetState();
+    rect = image.rect();
+    resetState();
 }
 
-Paddle::~Paddle() {
-
- std::cout << ("Paddle deleted") << std::endl;
+Paddle::~Paddle()
+{
+    std::cout << ("Paddle deleted") << std::endl;
 }
 
-void Paddle::setDx(int x) {
-  dx = x;
+void Paddle::setDx(int x)
+{
+    dx = x;
 }
 
-void Paddle::move() {
+void Paddle::move()
+{
     int x = rect.x() + dx;
     int y = rect.top();
 
@@ -28,17 +29,20 @@ void Paddle::move() {
         rect.moveTo(x, y);
 }
 
-void Paddle::resetState() {
+void Paddle::resetState()
+{
 
-  rect.moveTo(INITIAL_X, INITIAL_Y);
+    rect.moveTo(INITIAL_X, INITIAL_Y);
 }
 
-QRect Paddle::getRect() {
+QRect Paddle::getRect()
+{
 
-  return rect;
+    return rect;
 }
 
-QImage & Paddle::getImage() {
+QImage &Paddle::getImage()
+{
 
-  return image;
+    return image;
 }

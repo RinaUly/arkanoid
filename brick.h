@@ -6,21 +6,21 @@
 
 class Brick : public Sprite
 {
-  public:
-    Brick(int, int, bool=false);
+public:
+    Brick(int, int, bool = false);
     ~Brick();
 
-  public:
-    bool isDestroyed();//проверка на существование блока
-    void setDestroyed(bool);//устанвление флага уничтожения
-    QRect getRect() override;//получение хитбокса
-    void setRect(QRect) ;//установление хитбокса
-    QImage & getImage() override;//получение изображения
+public:
+    bool isDestroyed();          //проверка на существование блока
+    void setDestroyed(bool);     //устанвление флага уничтожения
+    QRect getRect() override;    //получение хитбокса
+    void setRect(QRect);         //установление хитбокса
+    QImage &getImage() override; //получение изображения
     bool isBonus();
 
-  private:
+private:
     bool bonus = false;
-    QImage image;//переменная изображения
-    QRect rect;//переменная хитбокса
-    bool destroyed;//флаг уничтожения
+    QImage image;   //переменная изображения
+    QRect rect;     //переменная хитбокса
+    bool destroyed; //флаг уничтожения
 };

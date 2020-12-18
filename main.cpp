@@ -1,17 +1,17 @@
 #include <QApplication>
 #include "match.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
 
-  QApplication app(argc, argv);
+    Match window;
 
-  Match window;
+    window.resize(300, 400);
+    window.setWindowTitle("Breakout");
+    window.show();
 
-  window.resize(300, 400);
-  window.setWindowTitle("Breakout");
-  window.show();
-
-  return app.exec();
+    return app.exec();
 }
 /*
 QImage разработан и оптимизирован для ввода-вывода и для прямого доступа к пикселям и манипулирования ими

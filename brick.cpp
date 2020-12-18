@@ -1,51 +1,60 @@
 #include <iostream>
 #include "brick.h"
 
-Brick::Brick(int x, int y, bool _bonus) {
-  bonus = _bonus;
-  if (bonus) {
-      if (!image.load(":/brickie_bonus.png"))
-          std::cout << ("Image was not loaded!!!!") << std::endl;
-  }
-  else {
-      if (!image.load(":/brickie.png"))
-          std::cout << ("Image was not loaded!!!!") << std::endl;
-  }
-  destroyed = false;
-  rect = image.rect();
-  rect.translate(x, y);
+Brick::Brick(int x, int y, bool _bonus)
+{
+    bonus = _bonus;
+    if (bonus)
+    {
+        if (!image.load(":/brickie_bonus.png"))
+            std::cout << ("Image was not loaded!!!!") << std::endl;
+    }
+    else
+    {
+        if (!image.load(":/brickie.png"))
+            std::cout << ("Image was not loaded!!!!") << std::endl;
+    }
+    destroyed = false;
+    rect = image.rect();
+    rect.translate(x, y);
 }
 
-Brick::~Brick() {
-
-  std::cout << ("Brick deleted") << std::endl;
+Brick::~Brick()
+{
+    ` std::cout << ("Brick deleted") << std::endl;
 }
 
-QRect Brick::getRect() {
+QRect Brick::getRect()
+{
 
-  return rect;
+    return rect;
 }
 
-void Brick::setRect(QRect rct) {
+void Brick::setRect(QRect rct)
+{
 
-  rect = rct;
+    rect = rct;
 }
 
-QImage & Brick::getImage() {
+QImage &Brick::getImage()
+{
 
-  return image;
+    return image;
 }
 
-bool Brick::isDestroyed() {
+bool Brick::isDestroyed()
+{
 
-  return destroyed;
+    return destroyed;
 }
 
-void Brick::setDestroyed(bool destr) {
+void Brick::setDestroyed(bool destr)
+{
 
-  destroyed = destr;
+    destroyed = destr;
 }
 
-bool Brick::isBonus() {
+bool Brick::isBonus()
+{
     return bonus;
 }

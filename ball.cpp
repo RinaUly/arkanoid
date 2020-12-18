@@ -1,70 +1,82 @@
 #include <iostream>
 #include "ball.h"
 
-Ball::Ball() {
-
-  xdir = 1;
-  ydir = -1;
-
-  image.load(":/ball.png");
-
-  rect = image.rect();
-  resetState();
-}
-
-Ball::~Ball() {
-
-  std::cout << ("Ball deleted") << std::endl;
-}
-
-void Ball::autoMove() {
-
-  rect.translate(xdir, ydir);
-
-  if (rect.left() == 0) {
+Ball::Ball()
+{
     xdir = 1;
-  }
+    ydir = -1;
 
-  if (rect.right() == RIGHT_EDGE) {
-    xdir = -1;
-  }
+    image.load(":/ball.png");
 
-  if (rect.top() == 0) {
-    ydir = 1;
-  }
+    rect = image.rect();
+    resetState();
 }
 
-void Ball::resetState() {
+Ball::~Ball()
+{
 
-  rect.moveTo(INITIAL_X, INITIAL_Y);
+    std::cout << ("Ball deleted") << std::endl;
 }
 
-void Ball::setXDir(int x) {
+void Ball::autoMove()
+{
 
-  xdir = x;
+    rect.translate(xdir, ydir);
+
+    if (rect.left() == 0)
+    {
+        xdir = 1;
+    }
+
+    if (rect.right() == RIGHT_EDGE)
+    {
+        xdir = -1;
+    }
+
+    if (rect.top() == 0)
+    {
+        ydir = 1;
+    }
 }
 
-void Ball::setYDir(int y) {
+void Ball::resetState()
+{
 
-  ydir = y;
+    rect.moveTo(INITIAL_X, INITIAL_Y);
 }
 
-int Ball::getXDir() {
+void Ball::setXDir(int x)
+{
 
-  return xdir;
+    xdir = x;
 }
 
-int Ball::getYDir() {
+void Ball::setYDir(int y)
+{
 
-  return ydir;
+    ydir = y;
 }
 
-QRect Ball::getRect() {
+int Ball::getXDir()
+{
 
-  return rect;
+    return xdir;
 }
 
-QImage & Ball::getImage() {
+int Ball::getYDir()
+{
 
-  return image;
+    return ydir;
+}
+
+QRect Ball::getRect()
+{
+
+    return rect;
+}
+
+QImage &Ball::getImage()
+{
+
+    return image;
 }
