@@ -38,3 +38,11 @@ void Brick::setDestroyed(bool destr) {
 
   destroyed = destr;
 }
+
+void Brick::setBonus(bool _bonus) {
+    bonus = _bonus;
+}
+
+bool Brick::isBonus() {
+    return bonus;
+}

@@ -4,8 +4,8 @@
 #include <QRect>
 #include <sprite.h>
 
-class Brick : public Sprite{
-
+class Brick : public Sprite
+{
   public:
     Brick(int, int);
     ~Brick();
@@ -16,8 +16,11 @@ class Brick : public Sprite{
     QRect getRect() override;//получение хитбокса
     void setRect(QRect) ;//установление хитбокса
     QImage & getImage() override;//получение изображения
+    void setBonus(bool);
+    bool isBonus() {return bonus;}
 
   private:
+    bool bonus = false;
     QImage image;//переменная изображения
     QRect rect;//переменная хитбокса
     bool destroyed;//флаг уничтожения

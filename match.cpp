@@ -23,6 +23,11 @@ Match::Match(QWidget *parent)
   for (int i=0; i<5; i++) {//присвоение позиции для кирпичиков
     for (int j=0; j<6; j++) {
       bricks[k] = new Brick(j*40+30, i*10+50);
+
+      //создаю бонусный кирпич при определённом условии
+      if (i == 2 && j == 3)
+          bricks[k]->setBonus(true);
+
       k++;
     }
   }
