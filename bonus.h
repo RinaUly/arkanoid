@@ -14,6 +14,9 @@ public:
         rect.translate(0, 1);
     }
 
+    QRect getRect() override;//получение хитбокса
+    QImage & getImage() override;//получение изображения
+
     int x;
     int y;
     QImage image;//переменная изображения

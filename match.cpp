@@ -101,7 +101,7 @@ void Match::drawObjects(QPainter *painter)
     painter->drawImage(paddle->getRect(), paddle->getImage());
 
     for (auto& bonus : bonuses)
-        painter->drawImage(bonus->rect, bonus->image);
+        painter->drawImage(bonus->getRect(), bonus->getImage());
 
     for (int i = 0; i < count; i++)
     {
@@ -260,7 +260,7 @@ void Match::victory()
 void Match::checkCollision()
 {
     for (auto& bonus : bonuses) {
-        if (bonus->rect.bottom() > BOTTOM_EDGE) {
+        if (bonus->getRect().bottom() > BOTTOM_EDGE) {
             if (count <= 1)
                 stopGame();
             else
@@ -301,7 +301,7 @@ void Match::checkCollision()
     int i = 0;
     int removed = 0;
     for (auto& bonus : bonuses) {
-        if (bonus->rect.intersects(paddle->getRect())) {
+        if (bonus->getRect().intersects(paddle->getRect())) {
             bonuses.removeAt(i - removed);
             removed++;
         }
