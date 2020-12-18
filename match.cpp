@@ -259,6 +259,17 @@ void Match::victory()
     gameStarted = false;
 }
 
+void Match::nextGame() {
+    balls.clear();
+    balls.push_back(new Ball());
+    balls[0]->resetState();
+    paddle->resetState();
+    count -= 1;
+    repaint();
+    startGame();
+    pauseGame();
+}
+
 void Match::checkCollision()
 {
     for (auto& bonus : bonuses) {
@@ -266,15 +277,7 @@ void Match::checkCollision()
             if (count <= 1)
                 stopGame();
             else
-            {
-                for (auto& ball : balls)
-                    ball->resetState();
-                paddle->resetState();
-                count -= 1;
-                repaint();
-                startGame();
-                pauseGame();
-            }
+                nextGame();
         }
     }
 
@@ -290,14 +293,7 @@ void Match::checkCollision()
                 if (count <= 1)
                     stopGame();
                 else
-                {
-                    ball->resetState();
-                    paddle->resetState();
-                    count -= 1;
-                    repaint();
-                    startGame();
-                    pauseGame();
-                }
+                    nextGame();
             }
         }
         i++;
