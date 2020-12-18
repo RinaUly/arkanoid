@@ -11,7 +11,7 @@ Match::Match(QWidget *parent)
     gameWon = false;
     paused = false;
     gameStarted = false;
-    ball = new Ball();
+    balls.push_back(new Ball());
     paddle = new Paddle();
     int ras = 0;
     for (int i = 0; i < count; i++)
@@ -39,8 +39,8 @@ Match::Match(QWidget *parent)
 
 Match::~Match()
 {
-
-    delete ball;
+    for (auto& ball : balls)
+        delete ball;
     delete paddle;
 
     for (int i = 0; i < N_OF_BRICKS; i++)
@@ -97,7 +97,8 @@ void Match::finishGame(QPainter *painter, QString message)
 void Match::drawObjects(QPainter *painter)
 { //отрисовыка всех объектов
 
-    painter->drawImage(ball->getRect(), ball->getImage());
+    for (auto& ball : balls)
+        painter->drawImage(ball->getRect(), ball->getImage());
     painter->drawImage(paddle->getRect(), paddle->getImage());
 
     for (auto& bonus : bonuses)
@@ -129,7 +130,8 @@ void Match::timerEvent(QTimerEvent *e)
 
 void Match::moveObjects()
 {
-    ball->autoMove();
+    for (auto& ball : balls)
+        ball->autoMove();
     for (auto& bonus : bonuses)
         bonus->move();
     paddle->move();
@@ -197,10 +199,10 @@ void Match::keyPressEvent(QKeyEvent *e)
 
 void Match::startGame()
 {
-
     if (!gameStarted)
     {
-        ball->resetState();
+        for (auto& ball : balls)
+            ball->resetState();
         paddle->resetState();
 
         for (int i = 0; i < N_OF_BRICKS; i++)
@@ -265,7 +267,8 @@ void Match::checkCollision()
                 stopGame();
             else
             {
-                ball->resetState();
+                for (auto& ball : balls)
+                    ball->resetState();
                 paddle->resetState();
                 count -= 1;
                 repaint();
@@ -275,19 +278,29 @@ void Match::checkCollision()
         }
     }
 
-    if (ball->getRect().bottom() > BOTTOM_EDGE)
-    {
-        if (count <= 1)
-            stopGame();
-        else
+    int i = 0;
+    int removed = 0;
+    for (auto& ball : balls) {
+        if (ball->getRect().bottom() > BOTTOM_EDGE)
         {
-            ball->resetState();
-            paddle->resetState();
-            count -= 1;
-            repaint();
-            startGame();
-            pauseGame();
+            balls.removeAt(i - removed);
+            removed++;
+
+            if (balls.size() == 0) {
+                if (count <= 1)
+                    stopGame();
+                else
+                {
+                    ball->resetState();
+                    paddle->resetState();
+                    count -= 1;
+                    repaint();
+                    startGame();
+                    pauseGame();
+                }
+            }
         }
+        i++;
     }
     for (int i = 0, j = 0; i < N_OF_BRICKS; i++)
     {
@@ -298,8 +311,8 @@ void Match::checkCollision()
             victory();
     }
 
-    int i = 0;
-    int removed = 0;
+    i = 0;
+    removed = 0;
     for (auto& bonus : bonuses) {
         if (bonus->getRect().intersects(paddle->getRect())) {
             bonuses.removeAt(i - removed);
@@ -308,88 +321,97 @@ void Match::checkCollision()
         i++;
     }
 
-    if ((ball->getRect()).intersects(paddle->getRect()))
-    { //касание мяча платформы
+    for (auto& ball : balls) {
+        if ((ball->getRect()).intersects(paddle->getRect()))
+        { //касание мяча платформы
 
-        int paddleLPos = paddle->getRect().left();
-        int ballLPos = ball->getRect().left();
+            int paddleLPos = paddle->getRect().left();
+            int ballLPos = ball->getRect().left();
 
-        int first = paddleLPos + 8;
-        int second = paddleLPos + 16;
-        int third = paddleLPos + 24;
-        int fourth = paddleLPos + 32;
+            int first = paddleLPos + 8;
+            int second = paddleLPos + 16;
+            int third = paddleLPos + 24;
+            int fourth = paddleLPos + 32;
 
-        if (ballLPos < first)
-        {
-            ball->setXDir(-1);
-            ball->setYDir(-1);
+            if (ballLPos < first)
+            {
+                ball->setXDir(-1);
+                ball->setYDir(-1);
+            }
+
+            if (ballLPos >= first && ballLPos < second)
+            {
+                ball->setXDir(-1);
+                ball->setYDir(-1 * ball->getYDir());
+            }
+
+            if (ballLPos >= second && ballLPos < third)
+            {
+                ball->setXDir(0);
+                ball->setYDir(-1);
+            }
+
+            if (ballLPos >= third && ballLPos < fourth)
+            {
+                ball->setXDir(1);
+                ball->setYDir(-1 * ball->getYDir());
+            }
+
+            if (ballLPos > fourth)
+            {
+                ball->setXDir(1);
+                ball->setYDir(-1);
+            }
         }
-
-        if (ballLPos >= first && ballLPos < second)
-        {
-            ball->setXDir(-1);
-            ball->setYDir(-1 * ball->getYDir());
-        }
-
-        if (ballLPos >= second && ballLPos < third)
-        {
-            ball->setXDir(0);
-            ball->setYDir(-1);
-        }
-
-        if (ballLPos >= third && ballLPos < fourth)
-        {
-            ball->setXDir(1);
-            ball->setYDir(-1 * ball->getYDir());
-        }
-
-        if (ballLPos > fourth)
-        {
-            ball->setXDir(1);
-            ball->setYDir(-1);
-        }
-    } //
+    }
 
     for (int i = 0; i < N_OF_BRICKS; i++)
     {
-        if ((ball->getRect()).intersects(bricks[i]->getRect()))
-        {
-
-            int ballLeft = ball->getRect().left();
-            int ballHeight = ball->getRect().height();
-            int ballWidth = ball->getRect().width();
-            int ballTop = ball->getRect().top();
-
-            QPoint pointRight(ballLeft + ballWidth + 1, ballTop);
-            QPoint pointLeft(ballLeft - 1, ballTop);
-            QPoint pointTop(ballLeft, ballTop - 1);
-            QPoint pointBottom(ballLeft, ballTop + ballHeight + 1);
-
-            if (!bricks[i]->isDestroyed())
+        for (auto& ball : balls) {
+            if ((ball->getRect()).intersects(bricks[i]->getRect()))
             {
-                if (bricks[i]->getRect().contains(pointRight))
-                {
-                    ball->setXDir(-1);
-                }
 
-                else if (bricks[i]->getRect().contains(pointLeft))
-                {
-                    ball->setXDir(1);
-                }
+                int ballLeft = ball->getRect().left();
+                int ballHeight = ball->getRect().height();
+                int ballWidth = ball->getRect().width();
+                int ballTop = ball->getRect().top();
 
-                if (bricks[i]->getRect().contains(pointTop))
-                {
-                    ball->setYDir(1);
-                }
+                QPoint pointRight(ballLeft + ballWidth + 1, ballTop);
+                QPoint pointLeft(ballLeft - 1, ballTop);
+                QPoint pointTop(ballLeft, ballTop - 1);
+                QPoint pointBottom(ballLeft, ballTop + ballHeight + 1);
 
-                else if (bricks[i]->getRect().contains(pointBottom))
+                if (!bricks[i]->isDestroyed())
                 {
-                    ball->setYDir(-1);
-                }
-                bricks[i]->setDestroyed(true);
+                    if (bricks[i]->getRect().contains(pointRight))
+                    {
+                        ball->setXDir(-1);
+                    }
 
-                if (bricks[i]->isBonus())
-                    bonuses.push_back(new Bonus(bricks[i]->x + bricks[i]->getRect().width() / 2, bricks[i]->y));
+                    else if (bricks[i]->getRect().contains(pointLeft))
+                    {
+                        ball->setXDir(1);
+                    }
+
+                    if (bricks[i]->getRect().contains(pointTop))
+                    {
+                        ball->setYDir(1);
+                    }
+
+                    else if (bricks[i]->getRect().contains(pointBottom))
+                    {
+                        ball->setYDir(-1);
+                    }
+                    bricks[i]->setDestroyed(true);
+
+                    if (bricks[i]->isBonus()) {
+                        //bonuses.push_back(new Bonus(bricks[i]->x + bricks[i]->getRect().width() / 2, bricks[i]->y));
+                        auto ball = new Ball(bricks[i]->x + bricks[i]->getRect().width() / 2, bricks[i]->y);
+                        balls.push_back(ball);
+                        ball->setYDir(-1);
+                        ball->setXDir(0);
+                    }
+                }
             }
         }
     }

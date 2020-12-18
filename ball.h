@@ -5,7 +5,7 @@
 class Ball : public Sprite{
 
   public:
-    Ball();
+    Ball(int=INITIAL_X, int=INITIAL_Y);
     ~Ball();
 
   public:

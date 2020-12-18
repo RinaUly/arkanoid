@@ -1,7 +1,7 @@
 #include <iostream>
 #include "ball.h"
 
-Ball::Ball()
+Ball::Ball(int _x, int _y)
 {
     xdir = 1;
     ydir = -1;
@@ -9,7 +9,7 @@ Ball::Ball()
     image.load(":/ball.png");
 
     rect = image.rect();
-    resetState();
+    rect.translate(_x, _y);
 }
 
 Ball::~Ball()

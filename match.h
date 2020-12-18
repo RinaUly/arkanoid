@@ -50,8 +50,8 @@ private:
     static const int BOTTOM_EDGE = 400; //положение нижней границы
 
     QList<Bonus*> bonuses;
+    QList<Ball*> balls;
 
-    Ball *ball;                         //объект ball
     Paddle *paddle;                     //объект paddle
     PuckSupply *pucksupply[3];          //объект класса Pucksupply
     Brick *bricks[N_OF_BRICKS];         //объекта класса Brick
