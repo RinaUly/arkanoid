@@ -7,5 +7,6 @@
         <file>brickie.png</file>
         <file>paddle.png</file>
         <file>brickie_bonus.png</file>
+        <file>bonus.png</file>
     </qresource>
 </RCC>

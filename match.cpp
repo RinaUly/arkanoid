@@ -27,8 +27,8 @@ Match::Match(QWidget *parent)
         {
 
             //создаю бонусный кирпич при определённом условии
-            bool bonus = true;
-            if (i == 2 && j == 3)
+            bool bonus = false;
+            if (i % 1 == 0 && j == 3)
                 bonus = true;
 
             bricks[k] = new Brick(j * 40 + 30, i * 10 + 50, bonus);
@@ -97,6 +97,10 @@ void Match::drawObjects(QPainter *painter)
 
     painter->drawImage(ball->getRect(), ball->getImage());
     painter->drawImage(paddle->getRect(), paddle->getImage());
+
+    for (auto& bonus : bonuses)
+        painter->drawImage(bonus->rect, bonus->image);
+
     for (int i = 0; i < count; i++)
     {
         painter->drawImage(pucksupply[i]->getRect(), pucksupply[i]->getImage());
@@ -123,8 +127,9 @@ void Match::timerEvent(QTimerEvent *e)
 
 void Match::moveObjects()
 {
-
     ball->autoMove();
+    for (auto& bonus : bonuses)
+        bonus->move();
     paddle->move();
 }
 
@@ -198,7 +203,8 @@ void Match::startGame()
 
         for (int i = 0; i < N_OF_BRICKS; i++)
         {
-            bricks[i]->setDestroyed(false);
+            auto& brick = bricks[i];
+            brick->setDestroyed(false);
         }
 
         gameOver = false;
@@ -326,7 +332,6 @@ void Match::checkCollision()
 
     for (int i = 0; i < N_OF_BRICKS; i++)
     {
-
         if ((ball->getRect()).intersects(bricks[i]->getRect()))
         {
 
@@ -362,6 +367,9 @@ void Match::checkCollision()
                     ball->setYDir(-1);
                 }
                 bricks[i]->setDestroyed(true);
+
+                if (bricks[i]->isBonus())
+                    bonuses.push_back(new Bonus(bricks[i]->x, bricks[i]->y));
             }
         }
     }

@@ -18,6 +18,8 @@ public:
     QImage &getImage() override; //получение изображения
     bool isBonus();
 
+    int x, y;
+
 private:
     bool bonus = false;
     QImage image;   //переменная изображения

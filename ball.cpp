@@ -20,7 +20,6 @@ Ball::~Ball()
 
 void Ball::autoMove()
 {
-
     rect.translate(xdir, ydir);
 
     if (rect.left() == 0)

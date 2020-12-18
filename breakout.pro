@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     ball.cpp \
+    bonus.cpp \
     brick.cpp \
     main.cpp \
     match.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
     sprite.cpp
 HEADERS += \
     ball.h \
+    bonus.h \
     brick.h \
     match.h \
     paddle.h \

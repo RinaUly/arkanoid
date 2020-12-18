@@ -1,8 +1,11 @@
 #include <iostream>
 #include "brick.h"
 
-Brick::Brick(int x, int y, bool _bonus)
+Brick::Brick(int _x, int _y, bool _bonus)
 {
+    x = _x;
+    y = _y;
+
     bonus = _bonus;
     if (bonus)
     {
@@ -21,7 +24,7 @@ Brick::Brick(int x, int y, bool _bonus)
 
 Brick::~Brick()
 {
-    ` std::cout << ("Brick deleted") << std::endl;
+    std::cout << ("Brick deleted") << std::endl;
 }
 
 QRect Brick::getRect()

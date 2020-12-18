@@ -17,6 +17,7 @@
 #include "brick.h"
 #include "paddle.h"
 #include "pucksupply.h"
+#include "bonus.h"
 class Match : public QWidget
 {
 
@@ -47,6 +48,9 @@ private:
     static const int N_OF_BRICKS = 30;  //кол-во кирпичиков
     static const int DELAY = 10;        //
     static const int BOTTOM_EDGE = 400; //положение нижней границы
+
+    QList<Bonus*> bonuses;
+
     Ball *ball;                         //объект ball
     Paddle *paddle;                     //объект paddle
     PuckSupply *pucksupply[3];          //объект класса Pucksupply
