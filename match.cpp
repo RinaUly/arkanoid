@@ -28,7 +28,7 @@ Match::Match(QWidget *parent)
 
             //создаю бонусный кирпич при определённом условии
             bool bonus = false;
-            if (i % 1 == 0 && j == 3)
+            if ((i + j) % 5 == 0)
                 bonus = true;
 
             bricks[k] = new Brick(j * 40 + 30, i * 10 + 50, bonus);
@@ -48,6 +48,9 @@ Match::~Match()
     {
         delete bricks[i];
     }
+
+    for (auto& bonus : bonuses)
+        delete bonus;
 }
 
 void Match::paintEvent(QPaintEvent *e)
@@ -257,18 +260,31 @@ void Match::victory()
 
 void Match::checkCollision()
 {
+    for (auto& bonus : bonuses) {
+        if (bonus->rect.bottom() > BOTTOM_EDGE) {
+            if (count <= 1)
+                stopGame();
+            else
+            {
+                ball->resetState();
+                paddle->resetState();
+                count -= 1;
+                repaint();
+                startGame();
+                pauseGame();
+            }
+        }
+    }
 
     if (ball->getRect().bottom() > BOTTOM_EDGE)
     {
         if (count <= 1)
-        {
             stopGame();
-        }
         else
         {
             ball->resetState();
             paddle->resetState();
-            count = count - 1;
+            count -= 1;
             repaint();
             startGame();
             pauseGame();
@@ -276,16 +292,21 @@ void Match::checkCollision()
     }
     for (int i = 0, j = 0; i < N_OF_BRICKS; i++)
     {
-
         if (bricks[i]->isDestroyed())
-        {
             j++;
-        }
 
         if (j == N_OF_BRICKS)
-        {
             victory();
+    }
+
+    int i = 0;
+    int removed = 0;
+    for (auto& bonus : bonuses) {
+        if (bonus->rect.intersects(paddle->getRect())) {
+            bonuses.removeAt(i - removed);
+            removed++;
         }
+        i++;
     }
 
     if ((ball->getRect()).intersects(paddle->getRect()))
