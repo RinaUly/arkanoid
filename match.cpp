@@ -47,11 +47,30 @@ void Match::destroyBricks() {
     }
 }
 
+struct Point {
+    int x;
+    int y;
+}
+
 void Match::generateBricks() {
+    std::vector<Point> reserved_points;
     for (int i = 0; i < N_OF_BRICKS; i++) {
         int x = rand() % 6;
         int y = rand() % 5;
+
+        bool cont = false;
+        for (int k = 0; k < reserved_points.size(); k++) {
+            auto& point = reserved_points[k];
+            if (point.x == x && point.y == y)
+                cont = true;
+        }
+        if (cont) {
+            i -= 1;
+            continue;
+        }
+
         bricks[i] = new Brick(x * 40 + 30, y * 10 + 50, false);
+        reserved_points.push_back(Point(x, y));
     }
 }
 
