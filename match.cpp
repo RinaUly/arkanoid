@@ -273,10 +273,11 @@ void Match::stopGame()
 
 void Match::victory()
 {
-
-    killTimer(timerId);
-    gameWon = true;
-    gameStarted = false;
+    destroyBricks();
+    generateBricks();
+    // killTimer(timerId);
+    // gameWon = true;
+    // gameStarted = false;
 }
 
 void Match::checkCollision()
