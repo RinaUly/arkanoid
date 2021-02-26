@@ -50,7 +50,7 @@ void Match::destroyBricks() {
 struct Point {
     int x;
     int y;
-}
+};
 
 void Match::generateBricks() {
     std::vector<Point> reserved_points;
@@ -70,7 +70,10 @@ void Match::generateBricks() {
         }
 
         bricks[i] = new Brick(x * 40 + 30, y * 10 + 50, false);
-        reserved_points.push_back(Point(x, y));
+        Point point;
+        point.x = x;
+        point.y = y;
+        reserved_points.push_back(point);
     }
 }
 
