@@ -26,6 +26,9 @@ public:
     ~Match();
 
 protected:
+    void destroyBricks();
+    void generateBricks();
+
     void paintEvent(QPaintEvent *);       //при условиях прописываются game lost victory и тд
     void timerEvent(QTimerEvent *);       //обновляет события moveObjects();checkCollision();repaint();
     void keyPressEvent(QKeyEvent *);      //отслеживает события по нажатию клавиши

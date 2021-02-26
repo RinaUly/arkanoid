@@ -1,6 +1,7 @@
 #include <QPainter>
 #include <QApplication>
 #include "match.h"
+#include <vector>
 
 Match::Match(QWidget *parent)
     : QWidget(parent)
@@ -21,20 +22,7 @@ Match::Match(QWidget *parent)
     }
     int k = 0;
 
-    for (int i = 0; i < 5; i++)
-    { //присвоение позиции для кирпичиков
-        for (int j = 0; j < 6; j++)
-        {
-            //создаю бонусный кирпич при определённом условии
-            bool bonus = false;
-            if ((i + j) % 7 == 0)
-                bonus = true;
-
-            bricks[k] = new Brick(j * 40 + 30, i * 10 + 50, bonus);
-
-            k++;
-        }
-    }
+    generateBricks();
 }
 
 Match::~Match()
@@ -50,6 +38,21 @@ Match::~Match()
 
     for (auto& bonus : bonuses)
         delete bonus;
+}
+
+void Match::destroyBricks() {
+    for (int i = 0; i < N_OF_BRICKS; i++) {
+        delete bricks[i];
+        bricks[i] = nullptr;
+    }
+}
+
+void Match::generateBricks() {
+    for (int i = 0; i < N_OF_BRICKS; i++) {
+        int x = rand() % 6;
+        int y = rand() % 5;
+        bricks[i] = new Brick(x * 40 + 30, y * 10 + 50, false);
+    }
 }
 
 void Match::paintEvent(QPaintEvent *e)
